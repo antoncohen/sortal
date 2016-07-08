@@ -1,0 +1,5 @@
+JIRA_SITE=https://jira.example.com/
+JIRA_USERNAME=jira-api@example.com
+JIRA_PASSWORD=password123
+JIRA_DEFAULT_PROJECT=FOO
+JIRA_DEFAULT_ISSUE_TYPE=Task

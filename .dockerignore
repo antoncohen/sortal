@@ -1,0 +1,40 @@
+.git
+.gitignore
+README.md
+
+#
+# OS X
+#
+.DS_Store
+.Spotlight-V100
+.Trashes
+
+#
+# Vagrant
+#
+.vagrant
+
+#
+# Rails
+#
+.env
+.env.sample
+*.rbc
+capybara-*.html
+.rspec
+log
+tmp
+db/*.sqlite3
+db/*.sqlite3-journal
+public/system
+coverage/
+spec/tmp
+**.orig
+rerun.txt
+pickle-email-*.html
+
+#
+# Docker
+#
+.docker-compose-env
+.docker-compose-env.sample
