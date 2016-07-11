@@ -1,11 +1,11 @@
 # Sortal
 
-A basic Support Portal template.
+A basic Support Portal template using Ruby on Rails.
 
 ## Development
 
 1. Install Docker
-2. `.docker-compose-env.sample .docker-compose-env` # Edit
+2. `cp .docker-compose-env.sample .docker-compose-env` # Edit
 3. `docker-compose build`
 4. `docker-compose run web bundle install` # Updates Gemfile.lock
 5. `docker-compose up`

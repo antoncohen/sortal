@@ -8,15 +8,15 @@ class SubmitController < ApplicationController
     issue = Sortal::JIRA::Issue.new
     issue.summary = params[:jira][:subject]
     issue.description = params[:jira][:body]
-    #issue.issuetype = 'Task'
+    issue.issuetype = params[:jira][:type] || 'Task'
     submitted_issue = issue.submit
 
     begin
       @html_header = 'JIRA issue submitted'
-      @html_text = "You issue is #{submitted_issue.key}"
-    rescue NoMethodError
+      @html_text = "Your issue is #{submitted_issue.fetch('key')}"
+    rescue KeyError
       @html_header = 'JIRA issue failed to submit'
-      @html_text = "Error: #{submitted_issue.errors}"
+      @html_text = "Error: #{submitted_issue['errors']}"
     end
   end
 end

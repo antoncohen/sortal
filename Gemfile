@@ -49,3 +49,9 @@ gem 'kramdown', '~> 1.11', '>= 1.11.1'
 
 # Twitter Bootstrap
 gem 'bootstrap', '~> 4.0.0.alpha3'
+
+# Faraday is used to create an API client for JIRA
+gem 'faraday', '~> 0.9.2'
+
+# Faraday middleware provides a JSON parser for Faraday
+gem 'faraday_middleware', '~> 0.10.0'
