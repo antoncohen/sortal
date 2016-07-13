@@ -21,6 +21,7 @@ module Sortal
           faraday.headers['Accept'] = 'application/json'
           faraday.response :json, content_type: 'application/json'
           faraday.adapter Faraday.default_adapter
+          faraday.use Faraday::Response::RaiseError
         end
       end
 
@@ -33,6 +34,47 @@ module Sortal
       end
     end
 
+    class User
+      attr_accessor :username
+
+      attr_reader :data
+
+      def initialize(username = nil)
+        @username = username
+        @client = Sortal::JIRA::Client.new
+      end
+
+      # Get a data, set @data
+      # @param username [String] must be a username, not an email address
+      # @return [Hash] user data
+      def get(username = @username)
+        query_params = "?username=#{ERB::Util.url_encode(username)}"
+        @data = @client.get('user' + query_params)
+      rescue Faraday::Error::ResourceNotFound
+        @data = nil
+      end
+
+      # Search for user by username or email address.
+      # @param username [String] usernamd or email address
+      # @return [Array<Hash>] matching users
+      def search(username = @username)
+        query_params = "?username=#{ERB::Util.url_encode(username)}"
+        @client.get('user/search' + query_params)
+      end
+
+      # Get API user data
+      #
+      # JIRA supports logging in with an email address,
+      # so ENV['JIRA_USERNAME'] could be an email address.
+      #
+      # JIRA only supports assigning an issue reporter by username.
+      # This method is used to get the username of the API user.
+      #
+      # @return [Hash] user data
+      def myself
+        @data = @client.get('myself')
+      end
+    end
 
     class Issue
       attr_accessor :project
@@ -58,39 +100,14 @@ module Sortal
         @client = Sortal::JIRA::Client.new
       end
 
-      # Search for user by username or email address.
-      # Used to get the JIRA username when we only have the email address.
-      # Returns an array of user hashes.
-      def search_username(username)
-        query_params = "?username=#{ERB::Util.url_encode(username)}"
-        @client.get('user/search' + query_params)
-      end
-
-      # Get the user hash of the API user.
-      # JIRA supports logging in with an email address,
-      # so ENV['JIRA_USERNAME'] could be an email address.
-      # JIRA only supports assigning an issue reporter by username.
-      # This method is used to get the username of the API user.
-      # Returns user hash.
+      # @return [Hash] api user data
       def api_user
-        @client.get('myself')
+        user = Sortal::JIRA::User.new
+        user.myself
       end
 
-      # Determines who the issue reporter should be.
-      # If username is set, and a search only find a single user with that
-      # that name, return that username, otherwise return the API user's
-      # username.
-      def real_reporter(username = nil)
-        if username
-          users = search_username(username)
-          users.length == 1 ? users[0]['name'] : api_user['name']
-        else
-          api_user['name']
-        end
-      end
-
-      # Submits a new issue based on class attributes.
-      # Returns hash of issue data, including new issue key.
+      # Submits a new issue based on class attributes
+      # @return [Hash] issue data
       def submit
         new_issue = {
           fields: {
@@ -103,7 +120,7 @@ module Sortal
               name: @issuetype
             },
             reporter: {
-              name: real_reporter(@reporter)
+              name: @reporter || api_user['name']
             }
           }
         }
