@@ -28,7 +28,7 @@ class SubmitController < ApplicationController
       @html_text = "Your issue is #{submitted_issue.fetch('key')}"
     rescue KeyError
       @html_header = 'JIRA issue failed to submit'
-      @html_text = "Error: #{submitted_issue['errors']}"
+      @html_text = "Error: #{submitted_issue}"
     end
   end
 

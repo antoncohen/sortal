@@ -126,6 +126,8 @@ module Sortal
         }
 
         @data = @client.post('issue/', new_issue)
+      rescue Faraday::ClientError => e
+        @data = JSON.parse(e.response[:body])
       end
     end
   end
