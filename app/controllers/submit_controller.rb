@@ -13,7 +13,7 @@ class SubmitController < ApplicationController
     logger.debug params[:jira][:subject]
     logger.debug params[:jira][:body]
 
-    username = nil # TODO: based on auth session
+    username = current_user['email']
 
     issue = Sortal::JIRA::Issue.new
     issue.project = valid_jira_project(params[:jira][:project])

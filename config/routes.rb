@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
+  match '/logout', to: 'sessions#destroy', as: 'logout', via: [:delete]
+  get '/login', to: redirect('/', status: 307)
+
   post 'submit/jira'
 
   root 'home#index'
@@ -8,11 +12,6 @@ Rails.application.routes.draw do
   }
 
   #get '/:section', to: redirect('/', status: 307)
-  #get 'home/index'
-
-
-
-  #resources :topics
 
   root 'home#index'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

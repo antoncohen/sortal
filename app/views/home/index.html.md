@@ -1,6 +1,6 @@
 <div class="container" markdown="1">
 # Support Portal
-Find me in app/views/home/index.html.erb
+Hello, <%= current_user['name'] %>!
 <div class="row" markdown="1">
 
 <div class="col-xs-12 col-sm-6" markdown="1">
@@ -41,4 +41,6 @@ bar
 </div>
 
 </div>
+
+<%= button_to 'Logout', logout_path, :method => :delete %>
 </div>
