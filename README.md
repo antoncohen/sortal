@@ -1,6 +1,8 @@
 # Sortal
 
-A basic Support Portal template using Ruby on Rails.
+A basic portal for submitting issues/tickets.
+
+Uses Ruby on Rails.
 
 ## Development
 

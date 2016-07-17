@@ -1,8 +1,9 @@
 require 'erb'
-require 'faraday'
-require 'faraday_middleware'
 require 'json'
 require 'uri'
+
+require 'faraday'
+require 'faraday_middleware'
 
 module Sortal
   module JIRA

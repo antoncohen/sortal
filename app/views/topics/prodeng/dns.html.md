@@ -1,11 +1,7 @@
-<div class="container" markdown="1">
 # DNS help!
 
+Submit requests below.
 
-<%= form_for :jira, url: {:controller=>'submit', action: 'jira'}, html: {class: 'jira_form'} do |f| %>
-  Subject: <%= f.text_field :subject %>
-  <br>
-  Body: <%= f.text_area :body, size: '60x12' %>
-  <%= f.submit 'Submit' %>
-<% end %>
-</div>
+<% @jira_project = 'TSP' %>
+<% @jira_type = 'Story' %>
+<%= render template: 'forms/jira_default' %>

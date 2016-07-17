@@ -50,6 +50,12 @@ gem 'kramdown', '~> 1.11', '>= 1.11.1'
 # Twitter Bootstrap
 gem 'bootstrap', '~> 4.0.0.alpha3'
 
+# Use Twitter Bootsrap for forms
+gem 'bootstrap_form', '~> 2.4'
+
+# Install Font Awesome icons
+gem 'font-awesome-sass', '~> 4.6', '>= 4.6.2'
+
 # Faraday is used to create an API client for JIRA
 gem 'faraday', '~> 0.9.2'
 

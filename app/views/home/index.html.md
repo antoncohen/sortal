@@ -1,6 +1,3 @@
-<div class="container" markdown="1">
-# Support Portal
-Hello, <%= current_user['name'] %>!
 <div class="row" markdown="1">
 
 <div class="col-xs-12 col-sm-6" markdown="1">
@@ -40,7 +37,4 @@ bar
 * [Offboarding](/boarding/offboarding)
 </div>
 
-</div>
-
-<%= button_to 'Logout', logout_path, :method => :delete %>
 </div>

@@ -16,5 +16,8 @@ $enable-flex: true;
 
 // Custom bootstrap variables must be set or imported before bootstrap itself.
 @import "bootstrap";
+@import "rails_bootstrap_forms";
+@import "font-awesome-sprockets";
+@import "font-awesome";
 @import "home.scss";
 @import "topics.scss";

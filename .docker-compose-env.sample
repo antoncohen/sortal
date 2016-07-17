@@ -1,5 +1,22 @@
+# This file sets environment variables for local development.
+# The same environment variables need to be set in production,
+# with production values.
+#
+# DO NOT PUT QUOTES AROUND VALUES. docker-compose splits on
+# equals signs and does not follow normal shell variable syntax.
+
+RAILS_SERVE_STATIC_FILES=true
+RAILS_LOG_TO_STDOUT=true
+
 JIRA_SITE=https://jira.example.com/
 JIRA_USERNAME=jira-api@example.com
 JIRA_PASSWORD=password123
 JIRA_DEFAULT_PROJECT=FOO
 JIRA_DEFAULT_ISSUE_TYPE=Task
+
+# Set to 'developer', 'openid_connect', or 'google_oauth2'
+AUTH_PROVIDER=openid_connect
+OPENID_CONNECT_CLIENT_ID=<client id>
+OPENID_CONNECT_CLIENT_SECRET=<client secret>
+OPENID_CONNECT_HOST=accounts.example.com
+OPENID_CONNECT_REDIRECT_URI=http://127.0.0.1:3000/auth/openid_connect/callback

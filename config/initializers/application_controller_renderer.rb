@@ -4,6 +4,3 @@
 #   http_host: 'example.org',
 #   https: false
 # )
-
-# Render Markdown templates
-require 'markdown_handler'

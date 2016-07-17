@@ -18,7 +18,11 @@ google_options = {
 }
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :developer if Rails.env.development?
-  provider :google_oauth2, ENV['OPENID_CONNECT_CLIENT_ID'], ENV['OPENID_CONNECT_CLIENT_SECRET']
-  provider :openid_connect, google_options
+  auth_provider = ENV['AUTH_PROVIDER']
+  client_id = ENV['OPENID_CONNECT_CLIENT_ID']
+  client_secret = ENV['OPENID_CONNECT_CLIENT_SECRET']
+
+  provider :developer if Rails.env.development? && auth_provider == 'developer'
+  provider :google_oauth2, client_id, client_secret if auth_provider == 'google_oauth2'
+  provider :openid_connect, google_options if auth_provider == 'openid_connect'
 end

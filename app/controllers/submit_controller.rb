@@ -1,35 +1,37 @@
 require 'set'
 
 require 'sortal/jira'
+require 'sortal/utils'
 
-VALID_JIRA_ISSUE_TYPES = Set['Task']
-VALID_JIRA_PROJECTS = Set['TSP']
+VALID_JIRA_ISSUE_TYPES = Set['Task', 'Story', 'Bug', 'Incident']
+VALID_JIRA_PROJECTS = Set['TSP', 'TISD']
 
+# Controller for submitting various types of issues/requests
 class SubmitController < ApplicationController
-  def jira
+  # Submit JIRA issues
+  def jira # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     params.require(:jira).require([:subject, :body])
-    params.require(:jira).permit([:project, :type])
-
-    logger.debug params[:jira][:subject]
-    logger.debug params[:jira][:body]
+    params.require(:jira).permit([:subject, :body, :project, :type])
 
     username = current_user['email']
 
     issue = Sortal::JIRA::Issue.new
-    issue.project = valid_jira_project(params[:jira][:project])
     issue.summary = params[:jira][:subject]
     issue.description = params[:jira][:body]
-    issue.issuetype = valid_jira_issue_type(params[:jira][:type])
+    issue.project = Sortal::Utils.valid_or_default(
+      params[:jira][:project],
+      VALID_JIRA_PROJECTS,
+      ENV['JIRA_DEFAULT_PROJECT'],
+      'TSP'
+    )
+    issue.issuetype = Sortal::Utils.valid_or_default(
+      params[:jira][:type],
+      VALID_JIRA_ISSUE_TYPES,
+      ENV['JIRA_DEFAULT_ISSUE_TYPE'],
+      'Task'
+    )
     issue.reporter = real_jira_reporter(username)
-    submitted_issue = issue.submit
-
-    begin
-      @html_header = 'JIRA issue submitted'
-      @html_text = "Your issue is #{submitted_issue.fetch('key')}"
-    rescue KeyError
-      @html_header = 'JIRA issue failed to submit'
-      @html_text = "Error: #{submitted_issue}"
-    end
+    @submitted_issue = issue.submit
   end
 
   # Get API user data
@@ -65,22 +67,6 @@ class SubmitController < ApplicationController
       users.length == 1 ? users[0]['name'] : jira_api_user['name']
     else
       jira_api_user['name']
-    end
-  end
-
-  def valid_jira_issue_type(type)
-    if VALID_JIRA_ISSUE_TYPES.include?(type)
-      type
-    else
-      ENV.fetch('JIRA_DEFAULT_ISSUE_TYPE', 'Task')
-    end
-  end
-
-  def valid_jira_project(project)
-    if VALID_JIRA_PROJECTS.include?(project)
-      project
-    else
-      ENV.fetch('JIRA_DEFAULT_PROJECT', 'TSP')
     end
   end
 end

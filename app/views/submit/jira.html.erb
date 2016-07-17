@@ -1,4 +1,8 @@
-<div class="container">
-<h1><%= @html_header %></h1>
-<p><%= @html_text %></p>
-</div>
+<% if !@submitted_issue['key'].nil? %>
+<h1>JIRA issue submitted</h1>
+<p>Your issue is <%= link_to @submitted_issue['key'], "#{ENV['JIRA_SITE']}browse/#{@submitted_issue['key']}" %></p>
+<% else %>
+<h1>ERROR: JIRA issue failed to submit</h1>
+<p>Error message:</p>
+<p><code><%= @submitted_issue %></code></p>
+<% end %>
