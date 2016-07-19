@@ -5,6 +5,9 @@
 # DO NOT PUT QUOTES AROUND VALUES. docker-compose splits on
 # equals signs and does not follow normal shell variable syntax.
 
+SITE_ADDRESS=http://127.0.0.1:3000/
+SITE_NAME=Submit Portal
+
 RAILS_SERVE_STATIC_FILES=true
 RAILS_LOG_TO_STDOUT=true
 
@@ -13,6 +16,13 @@ JIRA_USERNAME=jira-api@example.com
 JIRA_PASSWORD=password123
 JIRA_DEFAULT_PROJECT=FOO
 JIRA_DEFAULT_ISSUE_TYPE=Task
+
+EMAIL_DEFAULT_FROM=you+defaultfrom@example.com
+EMAIL_USERNAME=<username>
+EMAIL_PASSWORD=<password>
+EMAIL_DOMAIN=sendgrid.net
+EMAIL_SERVER=smtp.example.net
+EMAIL_PORT=587
 
 # Set to 'developer', 'openid_connect', or 'google_oauth2'
 AUTH_PROVIDER=openid_connect

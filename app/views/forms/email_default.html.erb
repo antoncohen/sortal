@@ -1,0 +1,9 @@
+<hr />
+
+<%= bootstrap_form_for :email, url: {:controller=>'submit', action: 'email'}, html: {class: 'email_form'} do |f| %>
+  <%= f.text_field :subject, placeholder: 'Descriptive subject' %>
+  <br />
+  <%= f.text_area :body, rows: '12', placeholder: 'Include all required info. This text area supports markdown.' %>
+  <%= f.hidden_field :to, value: @email_to || nil %>
+  <%= f.submit 'Submit' %>
+<% end %>

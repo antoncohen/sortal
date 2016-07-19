@@ -47,6 +47,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # Markdown parser
 gem 'kramdown', '~> 1.11', '>= 1.11.1'
 
+# Sanitize HTML, used when sending emails
+gem 'sanitize', '~> 4.1'
+
 # Twitter Bootstrap
 gem 'bootstrap', '~> 4.0.0.alpha3'
 
@@ -70,3 +73,6 @@ gem 'omniauth-openid-connect', '~> 0.2.3'
 
 # Support Google Auth with OmniAuth
 gem 'omniauth-google-oauth2', '~> 0.4.1'
+
+# Validate email address format
+gem 'rfc822', '~> 0.1.5'

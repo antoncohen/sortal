@@ -1,0 +1,5 @@
+<%= @body_html.html_safe %>
+
+<hr />
+Sent by <%= mail_to @from_address, @from_name %>
+using <%= link_to ENV['SITE_NAME'], ENV['SITE_ADDRESS'] %>

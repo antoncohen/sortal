@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get '/login', to: redirect('/', status: 307)
 
   post 'submit/jira'
+  post 'submit/email'
 
   root 'home#index'
 

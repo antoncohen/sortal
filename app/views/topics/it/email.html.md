@@ -1,10 +1,6 @@
 # Email help!
 
-Find me in app/views/topics/it/email.html.erb
+Submit requests below.
 
-```ruby
-puts 'foo'
-```
-
-Hello
-World
+<% @email_to = 'anton+totest@antoncohen.com' %>
+<%= render template: 'forms/email_default' %>

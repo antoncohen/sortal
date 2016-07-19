@@ -1,0 +1,8 @@
+<% if @submitted_message.errors.empty? %>
+<h1>Email sent</h1>
+<p>Your email to <%= @submitted_message.to.join(', ') %> has been sent</p>
+<% else %>
+<h1>ERROR: Email failed to send</h1>
+<p>Error message:</p>
+<p><code><%= @submitted_message.errors %></code></p>
+<% end %>

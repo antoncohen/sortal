@@ -3,7 +3,7 @@
 <%= bootstrap_form_for :jira, url: {:controller=>'submit', action: 'jira'}, html: {class: 'jira_form'} do |f| %>
   <%= f.text_field :subject, placeholder: 'Descriptive subject' %>
   <br />
-  <%= f.text_area :body, rows: '12', placeholder: 'Include all required info' %>
+  <%= f.text_area :body, rows: '12', placeholder: 'Include all required info.' %>
   <%= f.hidden_field :project, value: @jira_project || nil %>
   <%= f.hidden_field :type, value: @jira_type || nil %>
   <%= f.submit 'Submit' %>

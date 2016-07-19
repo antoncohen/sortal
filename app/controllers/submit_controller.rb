@@ -1,10 +1,16 @@
 require 'set'
 
+require 'sortal/email'
 require 'sortal/jira'
 require 'sortal/utils'
 
-VALID_JIRA_ISSUE_TYPES = Set['Task', 'Story', 'Bug', 'Incident']
-VALID_JIRA_PROJECTS = Set['TSP', 'TISD']
+require 'rfc822'
+
+VALID_JIRA_ISSUE_TYPES = Set['Task', 'Story', 'Bug', 'Incident'] # TODO: replace
+VALID_JIRA_PROJECTS = Set['TSP', 'TISD'] # TODO: replace
+
+VALID_EMAIL_TO = Set['help@example.com'] # TODO: replace
+VALID_EMAIL_FROM_DOMAINS = Set['example.com'] # TODO: replace
 
 # Controller for submitting various types of issues/requests
 class SubmitController < ApplicationController
@@ -32,6 +38,28 @@ class SubmitController < ApplicationController
     )
     issue.reporter = real_jira_reporter(username)
     @submitted_issue = issue.submit
+  end
+
+  def email # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    params.require(:email).require([:to, :subject, :body])
+    params.require(:email).permit([:to, :subject, :body])
+    from = current_user['email']
+    to = params[:email][:to]
+
+    raise ActionController::UnpermittedParameters.new, [:to] unless VALID_EMAIL_TO.include?(to)
+    raise ActionController::UnpermittedParameters.new, [:from] unless from.is_email?
+
+    message = Sortal::Email::Message.new
+    message.to = to
+    message.from_address = from
+    message.from_name = current_user['name']
+    message.valid_from_domains = VALID_EMAIL_FROM_DOMAINS
+    message.default_from = ENV['EMAIL_DEFAULT_FROM']
+    message.subject = params[:email][:subject]
+    message.body = params[:email][:body]
+    message.build
+
+    @submitted_message = SubmitMailer.email(message).deliver_now
   end
 
   # Get API user data
