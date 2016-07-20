@@ -1,3 +1,4 @@
+# Base controller for this application
 class ApplicationController < ActionController::Base
   before_action :require_login
   protect_from_forgery with: :exception
@@ -6,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def require_login
+  def require_login # rubocop:disable Metrics/MethodLength
     unless current_user
       flash[:error] = 'Log-in Required'
       if Rails.env.development?
@@ -21,7 +22,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # @return [Hash] of user info
   def current_user
     session[:current_user]
+  end
+
+  # @return [TrueClass,FalseClass] if non-expired session
+  def not_expired
+    !session[:expires_at].nil? && session[:expires_at] > Time.now.utc
+  rescue ArgumentError
+    false
   end
 end

@@ -30,3 +30,12 @@ OPENID_CONNECT_CLIENT_ID=<client id>
 OPENID_CONNECT_CLIENT_SECRET=<client secret>
 OPENID_CONNECT_HOST=accounts.example.com
 OPENID_CONNECT_REDIRECT_URI=http://127.0.0.1:3000/auth/openid_connect/callback
+
+# Session timeout in minutes, default = 600 (10 hours)
+SESSION_TIMEOUT=600
+
+# Form validation checks, comma separated values
+VALID_JIRA_ISSUE_TYPES=Task,Story,Bug
+VALID_JIRA_PROJECTS=TST,EXMP
+VALID_EMAIL_TO=help@example.com
+VALID_EMAIL_FROM_DOMAINS=example.com,example.net

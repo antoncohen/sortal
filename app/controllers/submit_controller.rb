@@ -6,11 +6,14 @@ require 'sortal/utils'
 
 require 'rfc822'
 
-VALID_JIRA_ISSUE_TYPES = Set['Task', 'Story', 'Bug', 'Incident'] # TODO: replace
-VALID_JIRA_PROJECTS = Set['TSP', 'TISD'] # TODO: replace
+VALID_JIRA_ISSUE_TYPES = Sortal::Utils.csv_to_set(
+  ENV['VALID_JIRA_ISSUE_TYPES'],
+  Set['Task', 'Story', 'Bug']
+)
+VALID_JIRA_PROJECTS = Sortal::Utils.csv_to_set(ENV['VALID_JIRA_PROJECTS'])
 
-VALID_EMAIL_TO = Set['help@example.com'] # TODO: replace
-VALID_EMAIL_FROM_DOMAINS = Set['example.com'] # TODO: replace
+VALID_EMAIL_TO = Sortal::Utils.csv_to_set(ENV['VALID_EMAIL_TO'])
+VALID_EMAIL_FROM_DOMAINS = Sortal::Utils.csv_to_set(ENV['VALID_EMAIL_FROM_DOMAINS'])
 
 # Controller for submitting various types of issues/requests
 class SubmitController < ApplicationController
@@ -27,8 +30,7 @@ class SubmitController < ApplicationController
     issue.project = Sortal::Utils.valid_or_default(
       params[:jira][:project],
       VALID_JIRA_PROJECTS,
-      ENV['JIRA_DEFAULT_PROJECT'],
-      'TSP'
+      ENV['JIRA_DEFAULT_PROJECT']
     )
     issue.issuetype = Sortal::Utils.valid_or_default(
       params[:jira][:type],
@@ -46,8 +48,9 @@ class SubmitController < ApplicationController
     from = current_user['email']
     to = params[:email][:to]
 
-    raise ActionController::UnpermittedParameters.new, [:to] unless VALID_EMAIL_TO.include?(to)
-    raise ActionController::UnpermittedParameters.new, [:from] unless from.is_email?
+    bad_param = ActionController::UnpermittedParameters
+    raise bad_param.new([:to]), 'Invalid To address' unless VALID_EMAIL_TO.include?(to)
+    raise bad_param.new[:from], 'User email address invalid' unless from.is_email?
 
     message = Sortal::Email::Message.new
     message.to = to
