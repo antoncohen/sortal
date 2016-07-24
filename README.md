@@ -4,20 +4,40 @@ A basic portal for submitting issues/tickets.
 
 Uses Ruby on Rails.
 
+## Getting started
+
+1. Install [Docker](https://www.docker.com/products/docker), on macOS get **Docker for Mac**
+2. Run `cp .docker-compose-env.sample .docker-compose-env` and edit the new file
+3. Run `docker-compose build` to build a base image
+4. Start your server with `docker-compose up`
+5. Visit [127.0.0.1:3000](http://127.0.0.1:3000)
+6. Hit **Ctrl-C** and run `docker-compose down` when you are done
+
 ## Development
 
-1. Install Docker
-2. `cp .docker-compose-env.sample .docker-compose-env` # Edit
-3. `docker-compose build`
-4. `docker-compose run web bundle install` # Updates Gemfile.lock
-5. `docker-compose up`
-6. Visit [127.0.0.1:3000](http://127.0.0.1:3000)
+### Gem updates
 
-## SAML
+Installing or updating Ruby gems works a little differently than other code changes, because the gems are installed in the base Docker image, and not in the source tree.
+
+1. `docker-compose down` to stop your container
+2. Update the **Gemfile**
+3. Run `docker-compose build` to build a new base container
+4. Run `docker-compose run --rm web bundle install` to update **Gemfile.lock**
+5. `docker-compose up` to start the container with the new gems
+
+## Testing
+
+Run tests within Docker.
+
+- `docker-compose run --rm web rake test`
+
+## Authentication
+
+### SAML
 
 To use SAML for authentication, set the environment variable `AUTH_PROVIDER=saml`.
 
-### Okta
+#### Okta
 
 SAML is confusing, here are instructions to configure an Okta app with the correct settings.
 
