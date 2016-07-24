@@ -6,10 +6,15 @@ class SessionsController < ApplicationController
   # Create session with user data from auth
   #
   # Set cookie expiration in encrypted session so it can't be tampered with.
-  def create # rubocop:disable Metrics/AbcSize,
+  def create # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    first_name = request.env['omniauth.auth'][:info][:first_name]
+    last_name = request.env['omniauth.auth'][:info][:last_name]
+    full_name = "#{first_name} #{last_name}"
     session[:current_user] = {
       uid: request.env['omniauth.auth'][:uid],
-      name: request.env['omniauth.auth'][:info][:name],
+      name: request.env['omniauth.auth'][:info][:name] || full_name,
+      first_name: first_name,
+      last_name: last_name,
       email: request.env['omniauth.auth'][:info][:email]
     }
 

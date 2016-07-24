@@ -68,8 +68,8 @@ gem 'faraday_middleware', '~> 0.10.0'
 # Support Authentication
 gem 'omniauth', '~> 1.3', '>= 1.3.1'
 
-# Support OpenID Connect with OmniAuth
-gem 'omniauth-openid-connect', '~> 0.2.3'
+# Support SAML with OmniAuth
+gem 'omniauth-saml', '~> 1.6'
 
 # Support Google Auth with OmniAuth
 gem 'omniauth-google-oauth2', '~> 0.4.1'

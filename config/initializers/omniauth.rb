@@ -1,28 +1,19 @@
-google_options = {
-  name: :openid_connect,
-  issuer: 'https://accounts.google.com',
-  scope: [:openid, :email],
-  response_type: :code,
-  client_options: {
-    discovery: true,
-    port: 443,
-    scheme: 'https',
-    host: ENV['OPENID_CONNECT_HOST'],
-    identifier: ENV['OPENID_CONNECT_CLIENT_ID'],
-    secret: ENV['OPENID_CONNECT_CLIENT_SECRET'],
-    redirect_uri: ENV['OPENID_CONNECT_REDIRECT_URI'],
-    authorization_endpoint: '/o/oauth2/v2/auth',
-    token_endpoint: 'https://www.googleapis.com/oauth2/v4/token',
-    userinfo_endpoint: 'https://www.googleapis.com/oauth2/v3/userinfo'
-  }
+email_name_format = 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress'
+
+saml_options = {
+  assertion_consumer_service_url: ENV['SAML_REDIRECT_URL'],
+  issuer: ENV['SAML_ISSUER'],
+  idp_sso_target_url: ENV['SAML_SIGNIN_URL'],
+  idp_cert_fingerprint: ENV['SAML_FINGERPRINT'],
+  name_identifier_format: ENV['SAML_NAME_FORMAT'] || email_name_format
 }
 
 Rails.application.config.middleware.use OmniAuth::Builder do
   auth_provider = ENV['AUTH_PROVIDER']
-  client_id = ENV['OPENID_CONNECT_CLIENT_ID']
-  client_secret = ENV['OPENID_CONNECT_CLIENT_SECRET']
+  google_id = ENV['GOOGLE_CLIENT_ID']
+  google_secret = ENV['GOOGLE_CLIENT_SECRET']
 
   provider :developer if Rails.env.development? && auth_provider == 'developer'
-  provider :google_oauth2, client_id, client_secret if auth_provider == 'google_oauth2'
-  provider :openid_connect, google_options if auth_provider == 'openid_connect'
+  provider :google_oauth2, google_id, google_secret if auth_provider == 'google_oauth2'
+  provider :saml, saml_options if auth_provider == 'saml'
 end

@@ -24,12 +24,20 @@ EMAIL_DOMAIN=sendgrid.net
 EMAIL_SERVER=smtp.example.net
 EMAIL_PORT=587
 
-# Set to 'developer', 'openid_connect', or 'google_oauth2'
-AUTH_PROVIDER=openid_connect
-OPENID_CONNECT_CLIENT_ID=<client id>
-OPENID_CONNECT_CLIENT_SECRET=<client secret>
-OPENID_CONNECT_HOST=accounts.example.com
-OPENID_CONNECT_REDIRECT_URI=http://127.0.0.1:3000/auth/openid_connect/callback
+# Set to 'developer', 'saml', or 'google_oauth2'
+AUTH_PROVIDER=saml
+
+GOOGLE_CLIENT_ID=<client id>
+GOOGLE_CLIENT_SECRET=<client secret>
+
+SAML_REDIRECT_URL=http://127.0.0.1:3000/auth/saml/callback
+SAML_ISSUER=<SAML provider's URL>
+SAML_SIGNIN_URL=<auth page for SAML provider>
+# Run `openssl x509 -noout -fingerprint -in public.cert` to get fingerprint
+SAML_FINGERPRINT=<fingerprint of public cert>
+# The default value is `urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress`
+SAML_NAME_FORMAT=urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+
 
 # Session timeout in minutes, default = 600 (10 hours)
 SESSION_TIMEOUT=600
