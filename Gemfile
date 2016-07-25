@@ -1,3 +1,10 @@
+# Set Ruby version based on .ruby-version if it exists
+ruby_version_file = File.join(File.expand_path(File.dirname(__FILE__)), '.ruby-version')
+ruby_version = if File.exists?(ruby_version_file)
+  File.read(ruby_version_file).match(/(\d+\.\d+\.\d+)/)
+end
+ruby ruby_version.to_s unless ruby_version.nil?
+
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

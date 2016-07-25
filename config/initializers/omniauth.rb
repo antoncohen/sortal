@@ -9,7 +9,7 @@ saml_options = {
 }
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  auth_provider = ENV['AUTH_PROVIDER']
+  auth_provider = ENV['AUTH_PROVIDER'] || 'google_oauth2'
   google_id = ENV['GOOGLE_CLIENT_ID']
   google_secret = ENV['GOOGLE_CLIENT_SECRET']
 
