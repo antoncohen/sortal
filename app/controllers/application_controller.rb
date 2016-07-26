@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   private
 
   def require_login # rubocop:disable Metrics/MethodLength
-    unless current_user
+    unless current_user && not_expired
       flash[:error] = 'Log-in Required'
       if Rails.env.development?
         if ENV['AUTH_PROVIDER']
