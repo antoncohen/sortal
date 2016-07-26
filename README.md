@@ -4,7 +4,74 @@ A basic portal for submitting issues/tickets.
 
 Uses Ruby on Rails.
 
-## Getting started
+## Content changes
+
+Adding or editing content (called *topics*) is super easy. All the topics are just markdown files in `app/views/topics/<section>/`. Simply create with a `.md` extension.
+
+To add the topic to the home page just edit the index file in `app/views/home/` (also in markdown!).
+
+### Markdown
+
+The markdown used is [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/#GitHub-flavored-markdown). Specifically that means it supports hard line break, code fencing with language, and `~~` for strikethroughs.
+
+You can use raw HTML in the markdown files. Inline elements, like `<b>` work interspersed with markdown. To use block elements like `<div>` you need to add the attribute `markdown="1"` to the opening tag in oder to have the inner text parsed as markdown. For example:
+
+```html
+<div markdown="1">
+# This will be converted to an HTML <h1>
+</div>
+
+<div>
+# This will be normal text, not parsed at markdown
+</div>
+```
+
+The markdown converter used is [Kramdown](https://github.com/gettalong/kramdown), which required XHTML. The means you should close your HTML tags, so `<br>` should be `<br />`.
+
+### ERB
+
+The markdown views also support ERB! :grinning: The `.md` files are processed as ERB templates prior to going through the markdown converter.
+
+### Forms
+
+Forms for submitting issues and emails are added with ERB. The existing form templates live in `app/views/forms/`. The forms expect variables to be set to control specifics about the form.
+
+Add the form ERB to the bottom of your markdown file.
+
+**JIRA example:**
+
+```erb
+# Topic title
+
+Topic text goes here.
+
+<% @jira_project = 'EXMP' %>
+<% @jira_type = 'Story' %>
+<%= render template: 'forms/jira_default' %>
+```
+
+**Email example:**
+
+```erb
+# Topic title
+
+Topic text goes here.
+
+<% @email_to = 'help@example.com' %>
+<%= render template: 'forms/email_default' %>
+```
+
+The form input is validated against allowed choices. These choices are set in environment variables as comma separated lists.
+
+```shell
+VALID_JIRA_ISSUE_TYPES=Task,Story,Bug
+VALID_JIRA_PROJECTS=TST,EXMP
+VALID_EMAIL_TO=help@example.com,support@example.com
+```
+
+## Local development environment
+
+Local development takes place entirely in Docker. There is no need to install any dependancies on your local computer.
 
 1. Install [Docker](https://www.docker.com/products/docker), on macOS get **Docker for Mac**
 2. Run `cp .docker-compose-env.sample .docker-compose-env` and edit the new file
@@ -14,6 +81,10 @@ Uses Ruby on Rails.
 6. Hit **Ctrl-C** and run `docker-compose down` when you are done
 
 ## Development
+
+The bulk of the code lives in `lib/sortal/`, with additional code in `app/controllers/` and `config/initializers/`.
+
+Code changes in `app/` should be reflected immediately in your development application, just refresh your browser. If you make changes elsewhere, like `lib/` you will need to to **Ctrl-C** the running server and  run `docker-compose up` to restart the application.
 
 ### Gem updates
 
@@ -33,9 +104,26 @@ Run tests within Docker.
 
 ## Authentication
 
+Three authentication providers are supported:
+
+- `google_oauth2` # the default and easiest to use
+- `saml` # for enterprise auth
+- `developer` # special provider that allows any name and email address, only in development mode
+
+Set the provider using the `AUTH_PROVIDER` environment variable.
+
+### Google
+
+Get a client ID and secret by creating an app using the [Google API Console](https://console.developers.google.com/), then [generate credentials](https://console.developers.google.com/apis/credentials). Set the environment variables `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
+
+See Google's [OpenID Connect documentation](https://developers.google.com/identity/protocols/OpenIDConnect) for full instructions.
+
+
 ### SAML
 
 To use SAML for authentication, set the environment variable `AUTH_PROVIDER=saml`.
+
+SAML setup will vary by provider.
 
 #### Okta
 

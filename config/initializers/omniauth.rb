@@ -8,12 +8,17 @@ saml_options = {
   name_identifier_format: ENV['SAML_NAME_FORMAT'] || email_name_format
 }
 
+dev_options = {
+  fields: [:name, :first_name, :last_name, :email],
+  uid_field: :email
+}
+
 Rails.application.config.middleware.use OmniAuth::Builder do
   auth_provider = ENV['AUTH_PROVIDER'] || 'google_oauth2'
   google_id = ENV['GOOGLE_CLIENT_ID']
   google_secret = ENV['GOOGLE_CLIENT_SECRET']
 
-  provider :developer if Rails.env.development? && auth_provider == 'developer'
+  provider :developer, dev_options if Rails.env.development? && auth_provider == 'developer'
   provider :google_oauth2, google_id, google_secret if auth_provider == 'google_oauth2'
   provider :saml, saml_options if auth_provider == 'saml'
 end

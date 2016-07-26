@@ -14,9 +14,13 @@ RAILS_LOG_TO_STDOUT=true
 JIRA_SITE=https://jira.example.com/
 JIRA_USERNAME=jira-api@example.com
 JIRA_PASSWORD=password123
+# Fallback project is the specified project is invalid
 JIRA_DEFAULT_PROJECT=FOO
+# Fallback issue type is the specified type is invalid
 JIRA_DEFAULT_ISSUE_TYPE=Task
 
+# Default from address is the logged-in user is not in a valid domain,
+# valid domains are set in VALID_EMAIL_FROM_DOMAINS
 EMAIL_DEFAULT_FROM=you+defaultfrom@example.com
 EMAIL_USERNAME=<username>
 EMAIL_PASSWORD=<password>
@@ -46,4 +50,6 @@ SESSION_TIMEOUT=600
 VALID_JIRA_ISSUE_TYPES=Task,Story,Bug
 VALID_JIRA_PROJECTS=TST,EXMP
 VALID_EMAIL_TO=help@example.com
+# Only domains that are known to pass DMARC for the server in EMAIL_SERVER
+# should be set as VALID_EMAIL_FROM_DOMAINS
 VALID_EMAIL_FROM_DOMAINS=example.com,example.net
