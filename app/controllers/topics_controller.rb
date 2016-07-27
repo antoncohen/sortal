@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Render markdown topics
 class TopicsController < ApplicationController
   rescue_from ActionView::MissingTemplate, with: :not_found
 
@@ -9,6 +12,6 @@ class TopicsController < ApplicationController
   end
 
   def not_found
-    raise ActionController::RoutingError.new('Not Found')
+    raise ActionController::RoutingError.new('Not Found'), 'Not Found'
   end
 end

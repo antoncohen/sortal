@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require 'kramdown'
 require 'sanitize'
 
 module Sortal
   module Email
+    # Email message object
     class Message
       attr_accessor :to
       attr_accessor :from_address

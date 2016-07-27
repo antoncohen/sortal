@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Base controller for this application
 class ApplicationController < ActionController::Base
   before_action :require_login

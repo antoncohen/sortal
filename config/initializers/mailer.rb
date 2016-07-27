@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActionMailer::Base.smtp_settings = {
   address: ENV['EMAIL_SERVER'] || 'smtp.sendgrid.net',
   port: ENV['EMAIL_PORT'] || '587',

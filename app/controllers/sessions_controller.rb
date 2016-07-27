@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Handle creating and destroying sessions stored as encrypted cookies
 class SessionsController < ApplicationController
   skip_before_action :require_login, only: [:new, :create]

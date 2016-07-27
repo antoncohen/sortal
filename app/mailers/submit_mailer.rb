@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Mailer for submitting mail through forms
 class SubmitMailer < ApplicationMailer
   def email(message)
     @from_address = message.from_address

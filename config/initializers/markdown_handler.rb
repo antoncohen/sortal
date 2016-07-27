@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sortal/markdown'
 
 # Render views ending in .md as markdown, converting them to HTML.

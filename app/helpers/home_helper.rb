@@ -1,5 +1,4 @@
-module HomeHelper
-  def title
-    'Support Portal'
-  end
+# frozen_string_literal: true
+
+module HomeHelper # :nodoc:
 end

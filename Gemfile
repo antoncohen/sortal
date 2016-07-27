@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # Set Ruby version based on .ruby-version if it exists
 ruby_version_file = '.ruby-version'
-ruby_version = if File.exists?(ruby_version_file)
-  File.read(ruby_version_file).match(/(\d+\.\d+\.\d+)/)
-end
+ruby_version = if File.exist?(ruby_version_file)
+                 File.read(ruby_version_file).match(/(\d+\.\d+\.\d+)/)
+               end
 ruby ruby_version.to_s unless ruby_version.nil?
 
 source 'https://rubygems.org'
@@ -83,3 +85,6 @@ gem 'omniauth-google-oauth2', '~> 0.4.1'
 
 # Validate email address format
 gem 'rfc822', '~> 0.1.5'
+
+# Use the Rubocop linter
+gem 'rubocop', '~> 0.42.0', require: false

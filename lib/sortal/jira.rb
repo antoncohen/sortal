@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'erb'
 require 'json'
 require 'uri'
@@ -7,8 +9,9 @@ require 'faraday_middleware'
 
 module Sortal
   module JIRA
+    # JIRA client object
     class Client
-      def initialize(
+      def initialize( # rubocop:disable Metrics/MethodLength
         site = ENV['JIRA_SITE'],
         username = ENV['JIRA_USERNAME'],
         password = ENV['JIRA_PASSWORD'],
@@ -35,6 +38,7 @@ module Sortal
       end
     end
 
+    # JIRA user object
     class User
       attr_accessor :username
 
@@ -77,6 +81,7 @@ module Sortal
       end
     end
 
+    # JIRA issue object
     class Issue
       attr_accessor :project
       attr_accessor :summary
@@ -86,7 +91,7 @@ module Sortal
 
       attr_reader :data
 
-      def initialize(
+      def initialize( # rubocop:disable Metrics/MethodLength
         project = ENV['JIRA_DEFAULT_PROJECT'],
         summary = nil,
         description = nil,
@@ -96,7 +101,7 @@ module Sortal
         @project = project
         @summary = summary
         @description = description
-        @issuetype = issuetype # TODO: Validate issue type
+        @issuetype = issuetype
         @reporter = reporter
         @client = Sortal::JIRA::Client.new
       end
@@ -109,7 +114,7 @@ module Sortal
 
       # Submits a new issue based on class attributes
       # @return [Hash] issue data
-      def submit
+      def submit # rubocop:disable Metrics/MethodLength
         new_issue = {
           fields: {
             project: {
